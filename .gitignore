@@ -1,0 +1,12 @@
+# Backend
+backend/target/
+backend/*.log
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+
+# IDE i systemowe pliki
+.idea/
+*.iml
+*.DS_Store
