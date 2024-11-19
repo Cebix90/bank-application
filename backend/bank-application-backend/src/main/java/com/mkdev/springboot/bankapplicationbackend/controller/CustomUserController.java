@@ -1,6 +1,8 @@
 package com.mkdev.springboot.bankapplicationbackend.controller;
 
+import com.mkdev.springboot.bankapplicationbackend.dto.RegisterCustomUserDTO;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
+import com.mkdev.springboot.bankapplicationbackend.mapper.CustomUserMapper;
 import com.mkdev.springboot.bankapplicationbackend.service.customuser.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +13,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class CustomUserController {
     private final CustomUserService customUserService;
+    private final CustomUserMapper customUserMapper;
 
     @Autowired
-    public CustomUserController(CustomUserService theCustomUserService) {
+    public CustomUserController(CustomUserService theCustomUserService, CustomUserMapper customUserMapper) {
         this.customUserService = theCustomUserService;
+        this.customUserMapper = customUserMapper;
     }
 
     @GetMapping("/custom-users")
@@ -33,11 +37,21 @@ public class CustomUserController {
         return theCustomUser;
     }
 
-    @PostMapping("/custom-users")
-    public CustomUser addUser (@RequestBody CustomUser theCustomUser) {
-        theCustomUser.setUserId(0);
+//    @PostMapping("/custom-users")
+//    public CustomUser addUser (@RequestBody CustomUser theCustomUser) {
+//        theCustomUser.setUserId(0);
+//
+//        CustomUser dbCustomUser = customUserService.save(theCustomUser);
+//
+//        return dbCustomUser;
+//    }
 
-        CustomUser dbCustomUser = customUserService.save(theCustomUser);
+    @PostMapping("/custom-users")
+    public CustomUser addUser (@RequestBody RegisterCustomUserDTO registerCustomUserDTO) {
+        CustomUser mappedCustomUser = customUserMapper.mapRequestToEntity(registerCustomUserDTO);
+        mappedCustomUser.setUserId(0);
+
+        CustomUser dbCustomUser = customUserService.save(mappedCustomUser);
 
         return dbCustomUser;
     }

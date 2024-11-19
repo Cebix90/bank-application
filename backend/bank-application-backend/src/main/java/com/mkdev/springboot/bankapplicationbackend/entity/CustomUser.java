@@ -1,5 +1,6 @@
 package com.mkdev.springboot.bankapplicationbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -50,12 +51,9 @@ public class CustomUser {
 
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    @JsonManagedReference
     private Address address;
 
-//    @OneToOne
-//    @Column(name="card_id")
-//    private Card card;
-//
     @OneToMany(mappedBy = "customUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SecurityQuestion> securityQuestions = new ArrayList<>();
 

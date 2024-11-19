@@ -3,14 +3,17 @@ package com.mkdev.springboot.bankapplicationbackend.service.customuser;
 import com.mkdev.springboot.bankapplicationbackend.dao.CustomUserRepository;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
     private final CustomUserRepository customUserRepository;
+//    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public CustomUserServiceImpl(CustomUserRepository customUserRepository) {
@@ -39,6 +42,12 @@ public class CustomUserServiceImpl implements CustomUserService {
 
     @Override
     public CustomUser save(CustomUser theCustomUser) {
+//        String hashedPassword = passwordEncoder.encode(theCustomUser.getPasswordHash());
+
+//        theCustomUser.setPasswordHash(hashedPassword);
+        theCustomUser.setStatus("ACTIVE");
+        theCustomUser.setCreatedAt(LocalDateTime.now());
+
         return customUserRepository.save(theCustomUser);
     }
 

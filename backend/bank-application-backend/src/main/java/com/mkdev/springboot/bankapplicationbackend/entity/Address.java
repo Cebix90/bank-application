@@ -1,13 +1,15 @@
 package com.mkdev.springboot.bankapplicationbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
 @ToString
 @Entity
@@ -36,6 +38,7 @@ public class Address {
     private String country;
 
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<CustomUser> users = new ArrayList<>();
 
     public Address() {}
