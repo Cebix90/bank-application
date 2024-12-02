@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class CustomUserController {
     private final CustomUserService customUserService;
     private final CustomUserMapper customUserMapper;
@@ -36,15 +37,6 @@ public class CustomUserController {
 
         return theCustomUser;
     }
-
-//    @PostMapping("/custom-users")
-//    public CustomUser addUser (@RequestBody CustomUser theCustomUser) {
-//        theCustomUser.setUserId(0);
-//
-//        CustomUser dbCustomUser = customUserService.save(theCustomUser);
-//
-//        return dbCustomUser;
-//    }
 
     @PostMapping("/custom-users")
     public CustomUser addUser (@RequestBody RegisterCustomUserDTO registerCustomUserDTO) {
