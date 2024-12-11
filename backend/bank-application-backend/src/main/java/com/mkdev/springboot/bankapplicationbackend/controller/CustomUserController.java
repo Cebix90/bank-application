@@ -4,6 +4,7 @@ import com.mkdev.springboot.bankapplicationbackend.dto.RegisterCustomUserDTO;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 import com.mkdev.springboot.bankapplicationbackend.mapper.CustomUserMapper;
 import com.mkdev.springboot.bankapplicationbackend.service.customuser.CustomUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class CustomUserController {
     }
 
     @PostMapping("/custom-users")
-    public CustomUser addUser (@RequestBody RegisterCustomUserDTO registerCustomUserDTO) {
+    public CustomUser addUser (@Valid @RequestBody RegisterCustomUserDTO registerCustomUserDTO) {
         CustomUser mappedCustomUser = customUserMapper.mapRequestToEntity(registerCustomUserDTO);
         mappedCustomUser.setUserId(0);
 

@@ -2,8 +2,9 @@ package com.mkdev.springboot.bankapplicationbackend.service.customuser;
 
 import com.mkdev.springboot.bankapplicationbackend.dao.CustomUserRepository;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
+import com.mkdev.springboot.bankapplicationbackend.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
     private final CustomUserRepository customUserRepository;
-//    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public CustomUserServiceImpl(CustomUserRepository customUserRepository) {
@@ -42,17 +43,25 @@ public class CustomUserServiceImpl implements CustomUserService {
 
     @Override
     public CustomUser save(CustomUser theCustomUser) {
-//        String hashedPassword = passwordEncoder.encode(theCustomUser.getPasswordHash());
+        if (!userExists(theCustomUser)) {
+            String hashedPassword = passwordEncoder.encode(theCustomUser.getPasswordHash());
 
-//        theCustomUser.setPasswordHash(hashedPassword);
-        theCustomUser.setStatus("ACTIVE");
-        theCustomUser.setCreatedAt(LocalDateTime.now());
+            theCustomUser.setPasswordHash(hashedPassword);
+            theCustomUser.setStatus("ACTIVE");
+            theCustomUser.setCreatedAt(LocalDateTime.now());
 
-        return customUserRepository.save(theCustomUser);
+            return customUserRepository.save(theCustomUser);
+        } else {
+            throw new UserAlreadyExistsException();
+        }
     }
 
     @Override
     public void deleteById(int theId) {
         customUserRepository.deleteById(theId);
+    }
+
+    private boolean userExists(CustomUser customUser) {
+        return customUserRepository.findByEmail(customUser.getEmail()).isPresent();
     }
 }
