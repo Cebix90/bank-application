@@ -13,6 +13,21 @@ jobs:
     name: Run Unit Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mateusz
+          POSTGRES_DB: bank_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -24,6 +39,17 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready...";
+            sleep 2;
+          done
+
       - name: Build with Maven and Run Tests
         working-directory: ./backend/bank-application-backend
         run: mvn clean test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/bank_db
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: mateusz
