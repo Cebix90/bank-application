@@ -25,4 +25,5 @@ jobs:
           cache: maven
 
       - name: Build with Maven and Run Tests
+        working-directory: ./backend/bank-application-backend
         run: mvn clean test
