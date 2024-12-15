@@ -9,7 +9,9 @@ public interface CustomUserService {
 
     CustomUser  findById(int theId);
 
-    CustomUser save(CustomUser theCustomUser);
+    CustomUser addUser(CustomUser theCustomUser);
+
+    CustomUser updateUser(CustomUser theCustomUser);
 
     void deleteById(int theId);
 }

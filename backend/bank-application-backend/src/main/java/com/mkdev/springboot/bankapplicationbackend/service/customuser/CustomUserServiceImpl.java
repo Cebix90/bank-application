@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,18 +41,36 @@ public class CustomUserServiceImpl implements CustomUserService {
     }
 
     @Override
-    public CustomUser save(CustomUser theCustomUser) {
+    public CustomUser addUser(CustomUser theCustomUser) {
         if (!userExists(theCustomUser)) {
             String hashedPassword = passwordEncoder.encode(theCustomUser.getPasswordHash());
 
             theCustomUser.setPasswordHash(hashedPassword);
             theCustomUser.setStatus("ACTIVE");
-            theCustomUser.setCreatedAt(LocalDateTime.now());
 
             return customUserRepository.save(theCustomUser);
         } else {
             throw new UserAlreadyExistsException();
         }
+    }
+
+    @Override
+    public CustomUser updateUser(CustomUser theCustomUser) {
+        CustomUser existingUser = customUserRepository.findById(theCustomUser.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + theCustomUser.getUserId()));
+
+        if (!existingUser.getEmail().equals(theCustomUser.getEmail()) && userExists(theCustomUser)) {
+            throw new RuntimeException("Email already in use");
+        }
+
+        existingUser.setName(theCustomUser.getName());
+        existingUser.setSurname(theCustomUser.getSurname());
+        existingUser.setEmail(theCustomUser.getEmail());
+        if (theCustomUser.getPasswordHash() != null && !theCustomUser.getPasswordHash().isBlank()) {
+            existingUser.setPasswordHash(passwordEncoder.encode(theCustomUser.getPasswordHash()));
+        }
+
+        return customUserRepository.save(existingUser);
     }
 
     @Override

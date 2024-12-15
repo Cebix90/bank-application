@@ -1,6 +1,7 @@
 package com.mkdev.springboot.bankapplicationbackend.controller;
 
 import com.mkdev.springboot.bankapplicationbackend.dto.RegisterCustomUserDTO;
+import com.mkdev.springboot.bankapplicationbackend.dto.UpdateCustomUserDTO;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 import com.mkdev.springboot.bankapplicationbackend.mapper.CustomUserMapper;
 import com.mkdev.springboot.bankapplicationbackend.service.customuser.CustomUserService;
@@ -44,14 +45,16 @@ public class CustomUserController {
         CustomUser mappedCustomUser = customUserMapper.mapRequestToEntity(registerCustomUserDTO);
         mappedCustomUser.setUserId(0);
 
-        CustomUser dbCustomUser = customUserService.save(mappedCustomUser);
+        CustomUser dbCustomUser = customUserService.addUser(mappedCustomUser);
 
         return dbCustomUser;
     }
 
     @PutMapping("/custom-users")
-    public CustomUser updateUser (@RequestBody CustomUser theCustomUser) {
-        CustomUser dbCustomUser = customUserService.save(theCustomUser);
+    public CustomUser updateUser (@Valid @RequestBody UpdateCustomUserDTO updateCustomUserDTO) {
+        CustomUser mappedCustomUser = customUserMapper.mapUpdateRequestToEntity(updateCustomUserDTO);
+
+        CustomUser dbCustomUser = customUserService.updateUser(mappedCustomUser);
 
         return dbCustomUser;
     }
