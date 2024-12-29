@@ -1,26 +1,25 @@
-// src/context/UserContext.js
+// // src/context/UserContext.js
 
-import React, { createContext, useState, useContext } from 'react';
+// import { createContext, useState, useContext } from "react";
 
-// Tworzymy kontekst
-const UserContext = createContext();
+// // Tworzymy kontekst
+// const UserContext = createContext();
 
-// Custom hook do łatwego dostępu do kontekstu
-export const useUser = () => useContext(UserContext);
+// // Custom hook do łatwego dostępu do kontekstu
+// export const useUser = () => useContext(UserContext);
 
-// Komponent dostarczający kontekst dla dzieci
-export const UserProvider = ({ children }) => {
-  const [userName, setUserName] = useState(null);
+// export const UserProvider = ({ this.props }) => {
+//   const [userName, setUserName] = useState(null);
 
-  // Funkcja logowania - ustawia nazwę użytkownika
-  const login = (name) => setUserName(name);
+//   // Funkcja logowania - ustawia nazwę użytkownika
+//   const login = (name) => setUserName(name);
 
-  // Funkcja wylogowania - resetuje stan użytkownika
-  const logout = () => setUserName(null);
+//   // Funkcja wylogowania - resetuje stan użytkownika
+//   const logout = () => setUserName(null);
 
-  return (
-    <UserContext.Provider value={{ userName, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
+//   return (
+//     <UserContext.Provider value={{ userName, login, logout }}>
+//       {props}
+//     </UserContext.Provider>
+//   );
+// };

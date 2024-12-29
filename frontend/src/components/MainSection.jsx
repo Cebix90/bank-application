@@ -171,8 +171,8 @@ function MainSection() {
             <Card.Body>
               <blockquote className="blockquote mb-0">
                 <p>
-                  "Dzięki promocji założyłem konto w kilka minut, a moje oszczędności
-                  już zaczynają przynosić zyski!"
+                &quot; Dzięki promocji założyłem konto w kilka minut, a moje oszczędności
+                  już zaczynają przynosić zyski!&quot;
                 </p>
                 <footer className="blockquote-footer">Jan Kowalski</footer>
               </blockquote>
