@@ -3,30 +3,42 @@ import { useForm } from "react-hook-form";
 import { Form, Button, Row, Col ,Container} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../context/UserContext';  
+import axios from "axios";
 
 function LoginPage() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [loginError, setLoginError] = useState("");
-  const { login } = useUser();  
+ // const { login } = useUser();  
 
-  const handleLogin = (data) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = users.find(
-      (user) => user.email === data.email && user.password === data.password
-    );
+  // const handleLogin = (data) => {
+  //   const users = JSON.parse(localStorage.getItem("users")) || [];
+  //   const userExists = users.find(
+  //     (user) => user.email === data.email && user.password === data.password
+  //   );
 
-    if (userExists) {
-      setLoginError(""); 
-      login(userExists.name); 
-      console.log("Zalogowano pomyślnie:", userExists);
-      navigate("/");
-      alert("Zalogowano pomyślnie!");
-    } else {
-      setLoginError("Nieprawidłowy email lub hasło");
+  //   if (userExists) {
+  //     setLoginError(""); 
+  //     login(userExists.name); 
+  //     console.log("Zalogowano pomyślnie:", userExists);
+  //     navigate("/");
+  //     alert("Zalogowano pomyślnie!");
+  //   } else {
+  //     setLoginError("Nieprawidłowy email lub hasło");
+  //   }
+  // };
+  const handleLogin = async (data) => {
+    try {
+        const response = await axios.post("http://localhost:8080/api/login", data);
+        localStorage.setItem('userId', response.data.userId); 
+        console.log(response.data);
+        navigate("/");
+        alert("Zalogowano pomyślnie!");
+    } catch (error) {
+        console.error("Błąd logowania:", error.response?.data || error.message);
+        setLoginError("Nieprawidłowy email lub hasło");
     }
-  };
-
+};
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <Form 
