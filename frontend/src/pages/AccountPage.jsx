@@ -1,4 +1,3 @@
-
 import  { useEffect, useState } from 'react';
 import { Container, Row, Col, Card,Spinner } from 'react-bootstrap';
 import { FaUserCircle, FaWallet } from 'react-icons/fa';
