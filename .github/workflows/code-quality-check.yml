@@ -22,7 +22,7 @@ jobs:
           node-version: '20'
     
       - name: Install dependencies
-        working-directory: /bank-application/frontend
+        working-directory: ./bank-application/frontend
         run: npm install
 
       - name: Run ESLint
