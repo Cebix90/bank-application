@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Form, Button, Row, Col ,Container} from "react-bootstrap";
+import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [loginError, setLoginError] = useState("");
- // const { login } = useUser();  
+  // const { login } = useUser();
 
   // const handleLogin = (data) => {
   //   const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -18,8 +21,8 @@ function LoginPage() {
   //   );
 
   //   if (userExists) {
-  //     setLoginError(""); 
-  //     login(userExists.name); 
+  //     setLoginError("");
+  //     login(userExists.name);
   //     console.log("Zalogowano pomyślnie:", userExists);
   //     navigate("/");
   //     alert("Zalogowano pomyślnie!");
@@ -29,21 +32,29 @@ function LoginPage() {
   // };
   const handleLogin = async (data) => {
     try {
-        const response = await axios.post("http://localhost:8080/api/login", data);
-        localStorage.setItem('userId', response.data.userId); 
-        console.log(response.data);
-        navigate("/");
-        alert("Zalogowano pomyślnie!");
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        data
+      );
+      localStorage.setItem("token", response.data.token); // Zapisz token JWT
+      localStorage.setItem("userId", response.data.userId); // Zapisz ID użytkownika
+
+      console.log(response.data);
+      navigate("/");
+      alert("Zalogowano pomyślnie!");
     } catch (error) {
-        console.error("Błąd logowania:", error.response?.data || error.message);
-        setLoginError("Nieprawidłowy email lub hasło");
+      console.error("Błąd logowania:", error.response?.data || error.message);
+      setLoginError("Nieprawidłowy email lub hasło");
     }
-};
+  };
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
-      <Form 
-        onSubmit={handleSubmit(handleLogin)} 
-        className="shadow p-4 rounded bg-light w-100 w-md-50" 
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Form
+        onSubmit={handleSubmit(handleLogin)}
+        className="shadow p-4 rounded bg-light w-100 w-md-50"
         style={{ maxWidth: "500px" }}
       >
         <h2 className="mb-4 text-center">Logowanie</h2>
