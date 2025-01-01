@@ -40,6 +40,7 @@ public class CustomUserController {
         return theCustomUser;
     }
 
+    //TODO to remove i think, to check
     @PostMapping("/custom-users")
     public CustomUser addUser (@Valid @RequestBody RegisterCustomUserDTO registerCustomUserDTO) {
         CustomUser mappedCustomUser = customUserMapper.mapRequestToEntity(registerCustomUserDTO);
