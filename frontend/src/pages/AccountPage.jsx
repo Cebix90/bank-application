@@ -10,11 +10,19 @@ function AccountPage() {
   const [error, setError] = useState(null); 
   const fetchUserData = async () => {
     try {
-      
-       const userId = localStorage.getItem('userId'); 
-      console.log('User ID:', userId);
-      if (!userId) throw new Error('Brak zalogowanego użytkownika');
-      const response = await axios.get(`http://localhost:8080/api/custom-users/${userId}`);
+      const userId = localStorage.getItem('userId'); 
+      const token = localStorage.getItem('token'); // Pobierz token z localStorage
+  
+      if (!userId || !token) throw new Error('Brak zalogowanego użytkownika lub tokenu');
+  
+      const response = await axios.get(
+        `http://localhost:8080/api/custom-users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Dodaj nagłówek z tokenem
+          }
+        }
+      );
       setUser(response.data);
     } catch (err) {
       setError(err.message || 'Wystąpił błąd podczas ładowania danych');
@@ -22,6 +30,7 @@ function AccountPage() {
       setLoading(false); 
     }
   };
+  
 
   useEffect(() => {
     fetchUserData();
