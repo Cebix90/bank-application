@@ -1,4 +1,4 @@
-package com.mkdev.springboot.bankapplicationbackend.dto;
+package com.mkdev.springboot.bankapplicationbackend.dto.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

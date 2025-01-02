@@ -34,15 +34,6 @@ public class AddressController {
         return theAddress;
     }
 
-    @PostMapping("/addresses")
-    public Address addAddress (@RequestBody Address theAddress) {
-        theAddress.setAddressId(0);
-
-        Address dbAddress = addressService.save(theAddress);
-
-        return dbAddress;
-    }
-
     @PutMapping("/addresses")
     public Address updateAddress (@RequestBody Address theAddress) {
         Address dbAddress = addressService.save(theAddress);

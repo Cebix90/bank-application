@@ -1,6 +1,6 @@
 package com.mkdev.springboot.bankapplicationbackend.mapper;
 
-import com.mkdev.springboot.bankapplicationbackend.dto.RegisterCustomUserDTO;
+import com.mkdev.springboot.bankapplicationbackend.dto.register.RegisterCustomUserDTO;
 import com.mkdev.springboot.bankapplicationbackend.dto.UpdateCustomUserDTO;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 import org.junit.jupiter.api.Test;

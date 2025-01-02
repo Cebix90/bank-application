@@ -21,7 +21,7 @@ import java.util.List;
 public class CustomUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
     @NotBlank(message = "Name cannot be blank")
@@ -41,15 +41,16 @@ public class CustomUser {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     private String status;
 
-    @ManyToOne
+    //    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     @JsonManagedReference
     private Address address;
@@ -57,7 +58,8 @@ public class CustomUser {
     @OneToMany(mappedBy = "customUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SecurityQuestion> securityQuestions = new ArrayList<>();
 
-    public CustomUser() {}
+    public CustomUser() {
+    }
 
     public CustomUser(String name, String surname, String email, String passwordHash, LocalDateTime createdAt, LocalDateTime updatedAt, String status, Address address, List<SecurityQuestion> securityQuestions) {
         this.name = name;
