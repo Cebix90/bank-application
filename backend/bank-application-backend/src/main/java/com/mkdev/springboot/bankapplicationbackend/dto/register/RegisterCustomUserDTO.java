@@ -1,4 +1,4 @@
-package com.mkdev.springboot.bankapplicationbackend.dto;
+package com.mkdev.springboot.bankapplicationbackend.dto.register;
 
 import com.mkdev.springboot.bankapplicationbackend.security.password.ValidPassword;
 import jakarta.validation.constraints.Email;

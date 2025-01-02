@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @EqualsAndHashCode
 @ToString
@@ -25,7 +22,6 @@ public class Address {
     @Column(name="house_number", nullable = false)
     private String houseNumber;
 
-    @Column(nullable = false)
     private int flat;
 
     @Column(name="postal_code", nullable = false)
@@ -37,13 +33,13 @@ public class Address {
     @Column(nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<CustomUser> users = new ArrayList<>();
+    private CustomUser users;
 
     public Address() {}
 
-    public Address(String street, String houseNumber, int flat, int postalCode, String city, String country, List<CustomUser> users) {
+    public Address(String street, String houseNumber, int flat, int postalCode, String city, String country, CustomUser users) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.flat = flat;

@@ -1,11 +1,14 @@
 package com.mkdev.springboot.bankapplicationbackend.service.customuser;
 
+import com.mkdev.springboot.bankapplicationbackend.dao.AddressRepository;
 import com.mkdev.springboot.bankapplicationbackend.dao.CustomUserRepository;
+import com.mkdev.springboot.bankapplicationbackend.entity.Address;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 import com.mkdev.springboot.bankapplicationbackend.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +16,13 @@ import java.util.Optional;
 @Service
 public class CustomUserServiceImpl implements CustomUserService {
     private final CustomUserRepository customUserRepository;
+    private final AddressRepository addressRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public CustomUserServiceImpl(CustomUserRepository customUserRepository) {
+    public CustomUserServiceImpl(CustomUserRepository customUserRepository, AddressRepository addressRepository) {
         this.customUserRepository = customUserRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -52,6 +57,14 @@ public class CustomUserServiceImpl implements CustomUserService {
         } else {
             throw new UserAlreadyExistsException();
         }
+    }
+
+    @Override
+    @Transactional
+    public CustomUser registerUserWithAddress(CustomUser user, Address address) {
+        Address savedAddress = addressRepository.save(address);
+        user.setAddress(savedAddress);
+        return addUser(user);
     }
 
     @Override

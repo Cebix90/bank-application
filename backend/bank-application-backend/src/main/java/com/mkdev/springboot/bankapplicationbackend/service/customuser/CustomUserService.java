@@ -1,5 +1,6 @@
 package com.mkdev.springboot.bankapplicationbackend.service.customuser;
 
+import com.mkdev.springboot.bankapplicationbackend.entity.Address;
 import com.mkdev.springboot.bankapplicationbackend.entity.CustomUser;
 
 import java.util.List;
@@ -10,6 +11,8 @@ public interface CustomUserService {
     CustomUser  findById(int theId);
 
     CustomUser addUser(CustomUser theCustomUser);
+
+    CustomUser registerUserWithAddress(CustomUser user, Address address);
 
     CustomUser updateUser(CustomUser theCustomUser);
 
