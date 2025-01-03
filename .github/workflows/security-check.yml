@@ -18,14 +18,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check Docker version
-        run: docker --version || echo "Docker not installed"
-
-      - name: Fix conflicting Docker packages
+      - name: List directory structure
         run: |
-          sudo apt-get remove -y containerd containerd.io || echo "No conflicting packages"
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+          echo "Root directory content:"
+          ls -la
+          echo "Backend directory content:"
+          ls -la backend
+          echo "Bank application backend directory content:"
+          ls -la backend/bank-application-backend || echo "Directory not found"
 
       - name: Run Trivy Dependency Scan
         run: |
@@ -36,4 +36,4 @@ jobs:
             --exit-code 1 \
             --no-progress \
             --severity HIGH,CRITICAL \
-            ./backend/bank-application-backend
+            backend/bank-application-backend
