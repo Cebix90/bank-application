@@ -1,0 +1,38 @@
+name: Trivy Security Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: List directory structure
+        run: |
+          echo "Root directory content:"
+          ls -la
+          echo "Backend directory content:"
+          ls -la backend
+          echo "Bank application backend directory content:"
+          ls -la backend/bank-application-backend || echo "Directory not found"
+
+      - name: Run Trivy Dependency Scan
+        run: |
+          docker run --rm \
+            -v $(pwd)/backend/bank-application-backend:/src \
+            aquasec/trivy:latest filesystem \
+            --scanners vuln,secret \
+            --exit-code 1 \
+            --no-progress \
+            --severity HIGH,CRITICAL \
+            /src
