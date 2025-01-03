@@ -1,7 +1,7 @@
-name: Security Check
+name: Trivy Security Scan
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Pozwala uruchomić workflow ręcznie
   push:
     branches:
       - main
@@ -18,9 +18,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run OWASP Dependency Check
-        uses: jeremylong/gh-action-dependency-check@v4
-        with:
-          project: bank-application
-          scanpath: ./backend/bank-application-backend
-          format: ALL
+      - name: Set up Docker
+        run: sudo apt-get update && sudo apt-get install -y docker.io
+
+      - name: Run Trivy Dependency Scan
+        run: |
+          docker run --rm \
+            -v $(pwd):/src \
+            aquasec/trivy:latest filesystem \
+            --scanners vuln,secret,license \
+            --exit-code 1 \
+            --no-progress \
+            --severity HIGH,CRITICAL \
+            ./backend/bank-application-backend
