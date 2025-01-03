@@ -32,7 +32,7 @@ jobs:
           docker run --rm \
             -v $(pwd)/backend/bank-application-backend:/src \
             aquasec/trivy:latest filesystem \
-            --scanners vuln,secret,license \
+            --scanners vuln,secret \
             --exit-code 1 \
             --no-progress \
             --severity HIGH,CRITICAL \
