@@ -1,0 +1,19 @@
+name: Security Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run OWASP Dependency Check
+        uses: jeremylong/gh-action-dependency-check@v4
+        with:
+          project: bank-application
+          scanpath: ./backend/bank-application-backend
+          format: ALL
