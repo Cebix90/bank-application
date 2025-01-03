@@ -30,10 +30,10 @@ jobs:
       - name: Run Trivy Dependency Scan
         run: |
           docker run --rm \
-            -v $(pwd):/src \
+            -v $(pwd)/backend/bank-application-backend:/src \
             aquasec/trivy:latest filesystem \
             --scanners vuln,secret,license \
             --exit-code 1 \
             --no-progress \
             --severity HIGH,CRITICAL \
-            backend/bank-application-backend
+            /src
