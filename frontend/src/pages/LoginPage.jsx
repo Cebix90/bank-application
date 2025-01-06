@@ -15,19 +15,21 @@ function LoginPage() {
 
   const handleLogin = async (data) => {
     try {
+      console.log("Data wysyłane do backendu:", data);
       const response = await axios.post(
         "http://localhost:8080/api/auth/login",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json", 
+          },
+        }
       );
-      console.log(data);
+      console.log("Data wysyłane do backendu PO:", data);
       localStorage.setItem("token", response.data.token); // Zapisz token JWT
       localStorage.setItem("userId", response.data.userId); // Zapisz ID użytkownika
       localStorage.setItem("email", data.email); // Zapisz ID użytkownika
 
-      // console.log(response.data.name);
-      //   localStorage.setItem("name",response.data.name);
-
-      console.log(response.data);
       navigate("/");
       alert("Zalogowano pomyślnie!");
     } catch (error) {
