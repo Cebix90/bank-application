@@ -1,0 +1,107 @@
+#version: '3.8'
+#
+#services:
+#  backend:
+#    build:
+#      context: ./backend/bank-application-backend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: mateusz
+#    depends_on:
+#      - db
+#
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3000:80"
+#
+#  db:
+#    image: postgres:16
+#    container_name: postgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: mateusz
+#      POSTGRES_DB: bank_db
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - db-data:/var/lib/postgresql/data
+#
+#volumes:
+#  db-data:
+#
+#version: '3.8'
+#
+#services:
+#  db:
+#    image: postgres:16
+#    container_name: bank-application-db-1
+#    restart: always
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_DB: bank_db
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: mateusz
+#
+#  backend:
+#    build:
+#      context: ./backend
+#    container_name: bank-application-backend-1
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: mateusz
+#    depends_on:
+#      - db
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3000:80"
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend/bank-application-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+
+  db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bank_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

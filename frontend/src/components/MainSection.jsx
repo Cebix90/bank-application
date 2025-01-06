@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaPiggyBank, FaChartLine, FaUsers } from 'react-icons/fa';
-
+import cardVisa from '../Images/cardVisa.jpg'
 function MainSection() {
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ function MainSection() {
         {/* Prawa kolumna z grafiką */}
         <Col lg={6} xs={12} className="text-center">
           <img
-            src="src/Images/cardVisa.jpg"
+            src={cardVisa}
             alt="Promocja konta"
             className="img-fluid rounded"
           />
