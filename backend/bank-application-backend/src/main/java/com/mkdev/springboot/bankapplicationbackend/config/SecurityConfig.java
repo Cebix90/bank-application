@@ -1,4 +1,4 @@
-package com.mkdev.springboot.bankapplicationbackend.config;//package com.mkdev.springboot.bankapplicationbackend.config;
+package com.mkdev.springboot.bankapplicationbackend.config;
 
 import com.mkdev.springboot.bankapplicationbackend.service.securityservice.CustomUserSecurityService;
 import org.springframework.context.annotation.Bean;
@@ -9,20 +9,18 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 
 import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@CrossOrigin(origins = "http://localhost:3000")
 public class SecurityConfig {
     private final CustomUserSecurityService securityService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -38,11 +36,11 @@ public class SecurityConfig {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(securityService, jwtTokenProvider.getSecretKey());
 
         security
-                .csrf(csrf -> csrf.disable()) // Wyłącz CSRF dla API
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Obsługa CORS
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Pozwól na preflight requests
-                        .requestMatchers("/api/auth/**").permitAll() // Logowanie i rejestracja publicznie dostępne
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -53,7 +51,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "https://localhost:5173"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         configuration.setAllowCredentials(true);
