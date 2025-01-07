@@ -66,7 +66,7 @@ function NavBar() {
   return (
     <Navbar className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">BankApplication</Navbar.Brand>
+        <Navbar.Brand href="#home">Bank Application</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-start">
           <Nav className="me-auto">

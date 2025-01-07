@@ -3,23 +3,64 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 function RegisterPage() {
-    const {register,handleSubmit,formState:{errors}} = useForm();
- //   const handleRegistration = (data)=> console.log(data);
- const [users, setUsers] = useState(
-    JSON.parse(localStorage.getItem("users")) || [] // Pobieranie danych z localStorage przy uruchomieniu
-  );
- const handleRegistration = (data) => {
-    const updatedUsers = [...users, data];
-    setUsers(updatedUsers);
+const navigate = useNavigate();
+const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
+  const handleRegistration = async (data) => {
+    try {
+        console.log(data);
+        const postalCodeAsInt = parseInt(data.zip, 10);
 
-    console.log("Zapisano użytkownika:", data);
+        if (isNaN(postalCodeAsInt)) {
+            throw new Error("Invalid postal code: must be a number");
+        }
+      const requestBody = {
+        user: {
+          name: data.name,
+          surname: data.surname,
+          email: data.email,
+          password: data.password,
+        },
+        address: {
+          street: data.address1,
+          houseNumber: data.address2,
+          city: data.city,
+          postalCode: postalCodeAsInt,
+          country: data.country,
+        },
+      };
+      console.log(requestBody);
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register", 
+        requestBody,
+        {
+        headers: { "Content-Type": "application/json" }
+        }
+
+      );
+      
+      console.log("Rejestracja zakończona sukcesem:", response.data);
+      alert("Zarejestrowano użytkownika. Informacja z serwera: " + response.data);
+       navigate("/login");
+    } catch (error) {
+      if (error.response) {
+        console.error("Błąd serwera:", error.response.data);
+        alert("Błąd podczas rejestracji: " + error.response.data);
+      } else {
+        console.error("Błąd po stronie klienta:", error);
+        alert("Wystąpił problem z połączeniem.");
+      }
+    }
   };
-
     
     const countriesTable = [
         {
