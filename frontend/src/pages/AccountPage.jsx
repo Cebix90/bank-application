@@ -3,15 +3,16 @@ import { Container, Row, Col, Card,Spinner } from 'react-bootstrap';
 import { FaUserCircle, FaWallet } from 'react-icons/fa';
 import FooterSection from '../components/FooterSection';
 import axios from 'axios';
-
+import NavBar from '../components/NavBar';
 function AccountPage() {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
+  const transactions = [];
   const fetchUserData = async () => {
     try {
       const userId = localStorage.getItem('userId'); 
-      const token = localStorage.getItem('token'); // Pobierz token z localStorage
+      const token = localStorage.getItem('token');
   
       if (!userId || !token) throw new Error('Brak zalogowanego użytkownika lub tokenu');
   
@@ -19,7 +20,7 @@ function AccountPage() {
         `http://localhost:8080/api/custom-users/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}` // Dodaj nagłówek z tokenem
+            Authorization: `Bearer ${token}`
           }
         }
       );
@@ -55,7 +56,9 @@ function AccountPage() {
 
   return (
     <>
-      <Container className="py-5">
+      <NavBar/>
+      <div className="d-flex flex-column min-vh-100">
+      <Container className="py-5 ">
         <Row className="mb-4">
           <Col>
             <h2 className="fw-bold text-center">Twoje konto</h2>
@@ -101,7 +104,49 @@ function AccountPage() {
             </Card>
           </Col>
         </Row>
+        {/* Historia transakcji */}
+      <Row className="justify-content-center mt-5">
+        <Col md={8}>
+          <h4 className="fw-bold text-center mb-4">Historia transakcji</h4>
+          {transactions && transactions.length > 0 ? (
+            <table className="table table-striped table-bordered">
+              <thead className="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Data</th>
+                  <th>Opis</th>
+                  <th>Kwota</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((transaction, index) => (
+                  <tr key={transaction.id}>
+                    <td>{index + 1}</td>
+                    <td>{new Date(transaction.date).toLocaleDateString('pl-PL')}</td>
+                    <td>{transaction.description}</td>
+                    <td
+                      className={
+                        transaction.amount > 0 ? 'text-success' : 'text-danger'
+                      }
+                    >
+                      {transaction.amount.toLocaleString('pl-PL', {
+                        style: 'currency',
+                        currency: 'PLN',
+                      })}
+                    </td>
+                    <td>{transaction.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-center text-muted">Brak historii transakcji.</p>
+          )}
+        </Col>
+      </Row>
       </Container>
+      </div>
       <FooterSection />
     </>
   );

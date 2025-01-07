@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaPiggyBank, FaChartLine, FaUsers } from 'react-icons/fa';
-import cardVisa from '../Images/cardVisa.jpg'
+import cardVisa from '../Images/cardV.png'
 function MainSection() {
   const navigate = useNavigate();
 

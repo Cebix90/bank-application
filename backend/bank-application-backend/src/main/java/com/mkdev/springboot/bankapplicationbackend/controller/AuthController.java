@@ -19,9 +19,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin()
 public class AuthController {
     private final CustomUserRepository customUserRepository;
     private final AuthenticationManager authenticationManager;
@@ -43,6 +43,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserWithAddressDTO registerUserWithAddressDTO) {
         try {
+            System.out.println("Przesłane dane: " + registerUserWithAddressDTO);
+
             CustomUser userEntity = customUserMapper.mapRequestToEntity(registerUserWithAddressDTO.getUser());
             Address addressEntity = addressMapper.mapToEntity(registerUserWithAddressDTO.getAddress());
             CustomUser registeredUser = customUserService.registerUserWithAddress(userEntity, addressEntity);
