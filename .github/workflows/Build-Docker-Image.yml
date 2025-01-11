@@ -60,7 +60,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Budowanie aplikacji backend
+        # Budowanie aplikacji backend
+      - name: Set execute permissions for Maven Wrapper
+        run: chmod +x backend/bank-application-backend/mvnw
+
       - name: Build the backend application
         run: |
           cd backend/bank-application-backend
