@@ -59,6 +59,12 @@ jobs:
       # Sprawdzenie repozytorium
       - name: Checkout code
         uses: actions/checkout@v3
+      # Instalacja Javy 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
         # Budowanie aplikacji backend
       - name: Set execute permissions for Maven Wrapper
