@@ -40,7 +40,7 @@ version: '3.8'
 
 services:
   backend:
-    image: secrets.DOCKER_USERNAME/bank-backend:latest
+    image: kamildoniek/bank-backend:latest
     build:
       context: ./backend/bank-application-backend
       dockerfile: Dockerfile
@@ -57,7 +57,7 @@ services:
       - bank-network
 
   frontend:
-    image: secrets.DOCKER_USERNAME/bank-frontend:latest
+    image: kamildoniek/bank-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
