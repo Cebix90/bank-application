@@ -1,46 +1,7 @@
-#version: '3.8'
-#
-#services:
-#  backend:
-#    build:
-#      context: ./backend/bank-application-backend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank_db
-#      SPRING_DATASOURCE_USERNAME: postgres
-#      SPRING_DATASOURCE_PASSWORD: postgres
-#    depends_on:
-#      - db
-#
-#  frontend:
-#    build:
-#      context: ./frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3000:80"
-#
-#  db:
-#    image: postgres:16
-#    container_name: postgres
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: bank_db
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - db-data:/var/lib/postgresql/data
-#
-#volumes:
-#  db-data:
-
 version: '3.8'
 
 services:
   backend:
-    image: kamildoniek/bank-backend:latest
     build:
       context: ./backend/bank-application-backend
       dockerfile: Dockerfile
@@ -51,20 +12,14 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
     depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - bank-network
+      - db
 
   frontend:
-    image: kamildoniek/bank-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3000:80"
-    networks:
-      - bank-network
 
   db:
     image: postgres:16
@@ -77,17 +32,62 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - bank-network
 
 volumes:
   db-data:
-
-networks:
-  bank-network:
-    driver: bridge
+#
+#version: '3.8'
+#
+#services:
+#  backend:
+#    image: kamildoniek/bank-backend:latest
+#    build:
+#      context: ./backend/bank-application-backend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bank_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    networks:
+#      - bank-network
+#
+#  frontend:
+#    image: kamildoniek/bank-frontend:latest
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3000:80"
+#    networks:
+#      - bank-network
+#
+#  db:
+#    image: postgres:16
+#    container_name: postgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: bank_db
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - db-data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD", "pg_isready", "-U", "postgres"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    networks:
+#      - bank-network
+#
+#volumes:
+#  db-data:
+#
+#networks:
+#  bank-network:
+#    driver: bridge
